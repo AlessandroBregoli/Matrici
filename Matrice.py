@@ -30,17 +30,26 @@ class Matrice:
         return Matrice(retMat)
     
     def __mul__(this, matrice):
-        if this.larghezza != matrice.altezza:
-            raise Exception("ops le matrici non sono compatibili")
         retMat = []
-        for i in range(0, this.altezza):
-            tmp = []
-            for j in range(0, matrice.larghezza):
-                temp = 0
-                for k in range(0, this.larghezza):
-                    temp = temp + this.matrice[i][k]*matrice.matrice[k][j]
-                tmp.append(temp)
-            retMat.append(tmp)
+        #se l'argomento non è una matrice (quindi in teoria un numero)
+        #eseguo cella a cella la moltiplicazione.
+        if not isinstance(matrice, Matrice):
+            for i in range(0, this.altezza):
+                tmp = []
+                for j in range(0, this.larghezza):
+                    tmp.append(this.matrice[i][j]*matrice)
+                retMat.append(tmp)
+        else:
+            if this.larghezza != matrice.altezza:
+                raise Exception("ops le matrici non sono compatibili")
+            for i in range(0, this.altezza):
+                tmp = []
+                for j in range(0, matrice.larghezza):
+                    temp = 0
+                    for k in range(0, this.larghezza):
+                        temp = temp + this.matrice[i][k]*matrice.matrice[k][j]
+                    tmp.append(temp)
+                retMat.append(tmp)
         return Matrice(retMat)
     
     def __str__(this):
@@ -86,5 +95,6 @@ class Matrice:
         return this.matrice[k[0]][k[1]]
     
 m1 = Matrice([[1,2],[3,4]])
-m2 = Matrice([[1,2],[3,4]])
-m = m1 + m2
+m2 = Matrice([[Matrice([[1,0,0]]), Matrice([[0,1,0]]), Matrice([[0,0,1]])],[1,3,2],[3,4,4]])
+print(m2.determinante)
+#m = m1 + m2
