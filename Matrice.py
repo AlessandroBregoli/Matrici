@@ -19,12 +19,16 @@ class Matrice:
         this.larghezza = len(matrice[0])
 
     def __add__(this, matrice):
-        if this.larghezza != matrice.larghezza or this.altezza != matrice.larghezza:
-            raise Exception("ops le matrici non sono compatibili")
+        #se l'argomento è 0 (capita calcolando il determinante di una matrice di matrici)
+        #allora:
+        if matrice == 0:
+            return this
+        if this.larghezza != matrice.larghezza or this.altezza != matrice.altezza:
+            raise Exception("ops le matrici non sono compatibili: \n"+ str(this) + str(matrice))
         retMat = []
-        for i in range(0, this.larghezza):
+        for i in range(0, this.altezza):
             tmp = []
-            for j in range(0, this.altezza):
+            for j in range(0, this.larghezza):
                 tmp.append(this.matrice[i][j] + matrice.matrice[i][j])
             retMat.append(tmp)
         return Matrice(retMat)
@@ -79,7 +83,8 @@ class Matrice:
         else:
             det = 0
             for i in range(0, this.larghezza):
-                det = det + pow(-1, i) * this.matrice[0][i] * this.complementa(0,i).determinante
+                #attenzione: sarebbe -1^i+j, ma gli indici partono da 0 e j è zero.
+                det = this.matrice[0][i] * this.complementa(0,i).determinante * pow(-1, i) + det
             return det
     @property
     def trasposta(this):
