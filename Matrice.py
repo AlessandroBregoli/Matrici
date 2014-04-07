@@ -1,3 +1,4 @@
+import numbers
 class Matrice:
     
     def __init__(this,matrice):
@@ -19,21 +20,27 @@ class Matrice:
         this.larghezza = len(matrice[0])
 
     def __add__(this, matrice):
-        if this.larghezza != matrice.larghezza or this.altezza != matrice.larghezza:
-            raise Exception("ops le matrici non sono compatibili")
+        #se l'argomento è 0 (capita calcolando il determinante di una matrice di matrici)
+        #allora:
+        if matrice == 0:
+            return this
+        if this.larghezza != matrice.larghezza or this.altezza != matrice.altezza:
+            raise Exception("ops le matrici non sono compatibili: \n"+ str(this) + str(matrice))
         retMat = []
-        for i in range(0, this.larghezza):
+        for i in range(0, this.altezza):
             tmp = []
-            for j in range(0, this.altezza):
+            for j in range(0, this.larghezza):
                 tmp.append(this.matrice[i][j] + matrice.matrice[i][j])
             retMat.append(tmp)
         return Matrice(retMat)
     
     def __mul__(this, matrice):
         retMat = []
-        #se l'argomento non è una matrice (quindi in teoria un numero)
+        if not isinstance(matrice, (numbers.Number, Matrice)):
+            raise Exception("Puoi moltiplicare per un numero o per una matrice.")
+        #se l'argomento è un numero
         #eseguo cella a cella la moltiplicazione.
-        if not isinstance(matrice, Matrice):
+        if isinstance(matrice, numbers.Number):
             for i in range(0, this.altezza):
                 tmp = []
                 for j in range(0, this.larghezza):
@@ -61,6 +68,8 @@ class Matrice:
         return tmp
 
     def complementa(this, riga, colonna):
+        #ritorna un minore della matrice, con la riga e la colonna
+        #specificate cancellate.
         ret = []
         for i in range(0, this.larghezza):
             if i != riga:
@@ -72,6 +81,7 @@ class Matrice:
         return Matrice(ret)
     @property
     def determinante(this):
+        #secondo Laplace
         if this.altezza != this.larghezza:
             raise Exception("ops, la matrice non è quadrata")
         if this.altezza == 1:
@@ -79,10 +89,12 @@ class Matrice:
         else:
             det = 0
             for i in range(0, this.larghezza):
-                det = det + pow(-1, i) * this.matrice[0][i] * this.complementa(0,i).determinante
+                #attenzione: sarebbe -1^(i+1+j+1), ma j=0, quindi -1^(i+1+1) = -1^(i) e basta
+                det = this.matrice[0][i] * this.complementa(0,i).determinante * pow(-1, i) + det
             return det
     @property
     def trasposta(this):
+        #le righe diventano colonne.
         ret = []
         for j in range(0,this.larghezza):
             tmp = []
