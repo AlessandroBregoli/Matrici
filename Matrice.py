@@ -1,4 +1,3 @@
-import numbers
 class Matrice:
     
     def __init__(this,matrice):
