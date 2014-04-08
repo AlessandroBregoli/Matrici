@@ -111,6 +111,13 @@ class Matrice:
         return this.matrice[k[0]][k[1]]
     
 m1 = Matrice([[1,2],[3,4]])
-m2 = Matrice([[Matrice([[1,0,0]]), Matrice([[0,1,0]]), Matrice([[0,0,1]])],[1,3,2],[3,4,4]])
+i = Matrice([[1,0,0]])
+j = Matrice([[0,1,0]])
+k = Matrice([[0,0,1]])
+m2 = Matrice([
+    [i, j, k],
+    [1,3,2],
+    [3,4,4]
+])
 print(m2.trasposta.determinante)
 #m = m1 + m2
