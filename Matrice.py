@@ -33,7 +33,9 @@ class Matrice:
                 tmp.append(this.matrice[i][j] + matrice.matrice[i][j])
             retMat.append(tmp)
         return Matrice(retMat)
-    
+    #addizione a destra
+    def __radd__(this,altroOggetto):
+        return this.__add__(altroOggetto)
     def __mul__(this, matrice):
         retMat = []
         if not isinstance(matrice, (numbers.Number, Matrice)):
@@ -58,7 +60,9 @@ class Matrice:
                     tmp.append(temp)
                 retMat.append(tmp)
         return Matrice(retMat)
-    
+    #moltiplicazione a destra
+    def __rmul__(this, altroOggetto):
+        return this.__mul__(altroOggetto)
     def __str__(this):
         tmp = ""
         for i in range(0, this.altezza):
@@ -90,7 +94,7 @@ class Matrice:
             det = 0
             for i in range(0, this.larghezza):
                 #attenzione: sarebbe -1^(i+1+j+1), ma j=0, quindi -1^(i+1+1) = -1^(i) e basta
-                det = this.matrice[0][i] * this.complementa(0,i).determinante * pow(-1, i) + det
+                det = det + pow(-1, i) * this.matrice[0][i] * this.complementa(0,i).determinante
             return det
     @property
     def trasposta(this):
@@ -108,5 +112,5 @@ class Matrice:
     
 m1 = Matrice([[1,2],[3,4]])
 m2 = Matrice([[Matrice([[1,0,0]]), Matrice([[0,1,0]]), Matrice([[0,0,1]])],[1,3,2],[3,4,4]])
-print(m2.determinante)
+print(m2.trasposta.determinante)
 #m = m1 + m2
