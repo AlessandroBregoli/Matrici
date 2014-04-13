@@ -114,10 +114,15 @@ class Matrice:
             if this.determinante != 0:
                 return this.altezza
             else:
+                rango = 0
                 for i in range(0,this.altezza):
                     for j in range(0,this.altezza):
-                        return this.complementa(i, j).rango
-                    
+                        tmp = this.complementa(i, j).rango
+                        if tmp > rango:
+                            rango = tmp
+                return rango
+                
+        
 m1 = Matrice([[1,2],[3,4]])
 i = Matrice([[1,0,0]])
 j = Matrice([[0,1,0]])
@@ -130,7 +135,7 @@ m2 = Matrice([
 m3 = Matrice([[1,2,3,4],
               [2,4,6,8],
               [0,3,4,5],
-              [1,0,7,9]
+              [1,0,8,10]
 ])
                
 print(m3.rango)
