@@ -1,4 +1,5 @@
 import numbers
+import itertools
 class Matrice:
     
     def __init__(this,matrice):
@@ -109,18 +110,27 @@ class Matrice:
     def __getitem__(this, k):
         return this.matrice[k[0]][k[1]]
     @property
-    def rango(this):    #rango orribilmente lento(ricorsivo con i minori) e funziona solo se la matrice è quadrata
+    def rango(this):    #rango orribilmente lento(ricorsivo con i minori)
+        rango = 0
         if this.altezza == this.larghezza:
             if this.determinante != 0:
                 return this.altezza
-            else:
-                rango = 0
+            else:                
                 for i in range(0,this.altezza):
                     for j in range(0,this.altezza):
                         tmp = this.complementa(i, j).rango
                         if tmp > rango:
-                            rango = tmp
-                return rango
+                            rango = tmp               
+        else:
+            if this.altezza < this.larghezza:
+                return this.trasposta.rango
+            else:                
+                for i in itertools.combinations(this.matrice, this.larghezza):
+                    tmp = Matrice(i).rango
+                    if tmp > rango:
+                        rango = tmp
+        return rango
+                
                 
         
 m1 = Matrice([[1,2],[3,4]])
@@ -133,7 +143,6 @@ m2 = Matrice([
     [3,4,4]
 ])
 m3 = Matrice([[1,2,3,4],
-              [2,4,6,8],
               [0,3,4,5],
               [1,0,8,10]
 ])
