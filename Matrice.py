@@ -16,8 +16,6 @@ class Matrice:
                 this.larghezza = 0
                 raise Exception("numero colonne eterogeneo")
         this.matrice = matrice
-        this.altezza = len(matrice)
-        this.larghezza = len(matrice[0])
 
     def __add__(this, matrice):
         #se l'argomento è 0 (capita calcolando il determinante di una matrice di matrici)
@@ -110,7 +108,16 @@ class Matrice:
 
     def __getitem__(this, k):
         return this.matrice[k[0]][k[1]]
-    
+    @property
+    def rango(this):    #rango orribilmente lento(ricorsivo con i minori) e funziona solo se la matrice è quadrata
+        if this.altezza == this.larghezza:
+            if this.determinante != 0:
+                return this.altezza
+            else:
+                for i in range(0,this.altezza):
+                    for j in range(0,this.altezza):
+                        return this.complementa(i, j).rango
+                    
 m1 = Matrice([[1,2],[3,4]])
 i = Matrice([[1,0,0]])
 j = Matrice([[0,1,0]])
@@ -120,5 +127,12 @@ m2 = Matrice([
     [1,3,2],
     [3,4,4]
 ])
-print(m2.trasposta.determinante)
+m3 = Matrice([[1,2,3,4],
+              [2,4,6,8],
+              [0,3,4,5],
+              [1,0,7,9]
+])
+               
+print(m3.rango)
+#print(m2.trasposta.determinante)
 #m = m1 + m2
