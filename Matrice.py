@@ -1,5 +1,6 @@
 import numbers
 import itertools
+import copy
 class Matrice:
     
     def __init__(this,matrice):
@@ -82,7 +83,7 @@ class Matrice:
                     if j != colonna:
                         temp.append(this.matrice[i][j])
                 ret.append(temp)
-        return Matrice(ret)
+        return Matrice(ret).clona()
     @property
     def determinante(this):
         #secondo Laplace
@@ -105,12 +106,14 @@ class Matrice:
             for i in range(0, this.altezza):
                 tmp.append(this.matrice[i][j])
             ret.append(tmp)
-        return Matrice(ret)
+        return Matrice(ret).clona()
 
     def __getitem__(this, k):
-        return this.matrice[k[0]][k[1]]
+        return this.matrice.__getitem__(k)
+    def __setitem__(this,k,j):
+        this.matrice.__setitem__(k,j)
     @property
-    def rango(this):    #rango orribilmente lento(ricorsivo con i minori)
+    def rango_minori(this):    #rango orribilmente lento(ricorsivo con i minori)
         rango = 0
         if this.altezza == this.larghezza:
             if this.determinante != 0:
@@ -118,20 +121,41 @@ class Matrice:
             else:                
                 for i in range(0,this.altezza):
                     for j in range(0,this.altezza):
-                        tmp = this.complementa(i, j).rango
+                        tmp = this.complementa(i, j).rango_minori
                         if tmp > rango:
                             rango = tmp               
         else:
             if this.altezza < this.larghezza:
-                return this.trasposta.rango
+                return this.trasposta.rango_minori
             else:                
                 for i in itertools.combinations(this.matrice, this.larghezza):
-                    tmp = Matrice(i).rango
+                    tmp = Matrice(i).rango_minori
                     if tmp > rango:
                         rango = tmp
         return rango
                 
-                
+    def riduciAScala(this, indice = 0):
+        if this.altezza > this.larghezza:
+            this.setMatrice(this.trasposta.matrice)
+        if this.altezza > indice:            
+            if this[indice][indice] == 0:
+                trovato = False
+                for i in range(indice + 1,this.altezza):
+                    if this[i][indice] != 0:
+                        this[i], this[indice] = this[indice],this[i]
+                        trovato = True
+                        break
+                if not(trovato):
+                    this.riduciAScala(indice + 1)
+                    return
+            for i in range(indice + 1,this.altezza):
+                azzeratore = -this[i][indice]/this[indice][indice]
+                for j in range(indice, this.larghezza):
+                    this[i][j] = this[i][j]+azzeratore*this[indice][j]
+            this.riduciAScala(indice + 1)
+        
+    def clona(this):
+        return Matrice(copy.deepcopy(this.matrice))
         
 m1 = Matrice([[1,2],[3,4]])
 i = Matrice([[1,0,0]])
@@ -142,11 +166,13 @@ m2 = Matrice([
     [1,3,2],
     [3,4,4]
 ])
-m3 = Matrice([[1,2,3,4],
-              [0,3,4,5],
-              [1,0,8,10]
+m3 = Matrice([[3,2,3],
+              [2,3,4],
+              [5,5,7]
 ])
-               
-print(m3.rango)
+
+print(m3.rango_minori)
+m3.riduciAScala()               
+print(m3)
 #print(m2.trasposta.determinante)
 #m = m1 + m2
