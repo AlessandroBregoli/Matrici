@@ -1,6 +1,7 @@
 import numbers
 import itertools
 import copy
+#ciao Pietro stò provando git su ubuntu
 class Matrice:
     
     def __init__(this,matrice):
@@ -171,8 +172,8 @@ m3 = Matrice([[3,2,3],
               [5,5,7]
 ])
 
-print(m3.rango_minori)
-m3.riduciAScala()               
-print(m3)
-#print(m2.trasposta.determinante)
+#print(m3.rango_minori)
+#m3.riduciAScala()               
+#print(m3)
+print(m2.determinante)
 #m = m1 + m2
