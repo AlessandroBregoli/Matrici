@@ -1,6 +1,7 @@
 import numbers
 import itertools
 import copy
+#ciao Pietro sto provando git su ubuntu
 from fractions import Fraction
 
 class Matrice:
@@ -151,7 +152,7 @@ class Matrice:
                     this.riduciAScala(indice + 1)
                     return
             for i in range(indice + 1,this.altezza):
-                azzeratore = Fraction(-this[i][indice],this[indice][indice])
+                azzeratore = -this[i][indice]/this[indice][indice]
                 for j in range(indice, this.larghezza):
                     this[i][j] = this[i][j]+azzeratore*this[indice][j]
             this.riduciAScala(indice + 1)
