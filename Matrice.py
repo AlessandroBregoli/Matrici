@@ -93,7 +93,7 @@ class Matrice:
         if this.altezza != this.larghezza:
             raise Exception("ops, la matrice non è quadrata")
         if this.altezza == 1:
-            return this.matrice[0][0]
+            return  float(this.matrice[0][0])
         else:
             det = 0
             for i in range(0, this.larghezza):
@@ -121,6 +121,8 @@ class Matrice:
         if this.altezza == this.larghezza:
             if this.determinante != 0:
                 return this.altezza
+            if this.determinante == 0 and this.altezza == 1:
+                return 0
             else:                
                 for i in range(0,this.altezza):
                     for j in range(0,this.altezza):
@@ -174,8 +176,8 @@ m3 = Matrice([[3,2,3],
               [5,5,7]
 ])
 
+m3.riduciAScala()           
+print(m3)    
 print(m3.rango_minori)
-m3.riduciAScala()               
-print(m3)
 #print(m2.trasposta.determinante)
 #m = m1 + m2
