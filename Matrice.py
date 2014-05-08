@@ -138,6 +138,22 @@ class Matrice:
                     if tmp > rango:
                         rango = tmp
         return rango
+        
+    @property
+    def rango_gauss(this):
+        tmp = this.clona()
+        
+        tmp.riduciAScala()
+        
+        intRango = tmp.larghezza if tmp.larghezza < tmp.altezza else tmp.altezza
+        #creo vettore nullo
+        nullo = [0 for x in range(0,tmp.larghezza)]
+        
+        #conto linee linearmente indipendenti
+        for riga in tmp.matrice:
+            if riga == nullo:
+                intRango -= 1;
+        return intRango
                 
     def riduciAScala(this, indice = 0):
         if this.altezza > this.larghezza:
